@@ -47,8 +47,12 @@ spec:
               volumeMounts:
                 - mountPath: /config
                   name: volume-nginx-configmap
+                - mountPath: /credentials
+                  name: volume-nginx-secret              
             volumes:
               - name: volume-nginx-configmap
                 configMap:
                     name: nginx-config            
-              
+              - name: volume-nginx-secret
+                secret:
+                    secretName: nginx-credentials                        
