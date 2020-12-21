@@ -28,10 +28,10 @@ spec:
               resources:
                 requests:
                   memory: 0.1G
-                  cpu: 50m
+                  cpu: 100m
                 limits:
                   memory: 0.2G
-                  cpu: 100m
+                  cpu: 200m
               livenessProbe:
                   httpGet:
                       path: /
@@ -43,5 +43,12 @@ spec:
                   httpGet:
                       path: /
                       port: 80
-                  periodSeconds: 10 
+                  periodSeconds: 10
+              volumeMounts:
+                - mountPath: /config
+                  name: volume-nginx-configmap
+            volumes:
+              - name: volume-nginx-configmap
+                configMap:
+                    name: nginx-config            
               
