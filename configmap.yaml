@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  foo: bar
+  my-var: value
+  other-var: other-value
+  properties-file: |
+    environment: production
+    version: v1.0.1
+    database-name: app-prod
