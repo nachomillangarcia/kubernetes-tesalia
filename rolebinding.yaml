@@ -1,0 +1,38 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-only-devs
+subjects:
+- kind: User
+  name: marcos@tesalia.com
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: david@tesalia.com
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: nicolas@tesalia.com
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: read-only
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: admin-devs
+subjects:
+- kind: User
+  name: marcos@tesalia.com
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: david@tesalia.com
+  apiGroup: rbac.authorization.k8s.io
+- kind: User
+  name: nicolas@tesalia.com
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io

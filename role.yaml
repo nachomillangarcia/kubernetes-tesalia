@@ -1,0 +1,22 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: read-only
+rules:
+- apiGroups: [""]
+  resources: ["pods", "pods/log", "persistentvolumes", "persistentvolumeclaims"]
+  verbs: ["get", "watch", "list"]
+
+- apiGroups: ["storage.k8s.io"]
+  resources: ["storageclass"]
+  verbs: ["get", "watch", "list"]
+
+- apiGroups: ["apps"]
+  resources: ["deployments", "statefulsets", "daemonsets"]
+  verbs: ["get", "watch", "list"]
+  resourceNames: ["nginx-deployment"]
+
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["create"]
+  resourceNames: ["nginx-deployment-*"]
