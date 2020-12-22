@@ -12,6 +12,7 @@ spec:
             labels:
                 app: javaapp
         spec:
+            serviceAccount: javaapp
             containers:
             - name: javaapp
               image: nachomillangarcia/java-insst
