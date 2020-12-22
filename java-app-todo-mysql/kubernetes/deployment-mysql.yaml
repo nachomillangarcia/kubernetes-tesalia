@@ -43,3 +43,11 @@ spec:
                   tcpSocket:
                     port: 3306
                   periodSeconds: 10
+              volumeMounts:
+                - mountPath: /var/lib/mysql
+                  name: persistent-mysql-data
+            volumes:
+            - name: persistent-mysql-data
+              persistentVolumeClaim:
+                  claimName: pvc-mysql
+              
