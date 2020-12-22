@@ -1,20 +1,17 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-    name: mysql-deployment
-    annotations:
-      prometheus.io/monitor: "true"
+    name: mysql-statefulset
 spec:
-    replicas: 1
-    strategy:
-        type: Recreate
     selector:
         matchLabels:
-            app: java-mysql
+            app: mysql-statefulset
+    serviceName: mysql-statefulset
+    replicas: 1
     template:
         metadata:
             labels:
-                app: java-mysql
+                app: mysql-statefulset
         spec:
             containers:
             - name: mysql
@@ -48,10 +45,13 @@ spec:
                     port: 3306
                   periodSeconds: 10
               volumeMounts:
-                - mountPath: /var/lib/mysql
-                  name: persistent-mysql-data
-            volumes:
-            - name: persistent-mysql-data
-              persistentVolumeClaim:
-                  claimName: pvc-mysql
-              
+              - name: data
+                mountPath: /var/lib/mysql
+    volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 3Gi
