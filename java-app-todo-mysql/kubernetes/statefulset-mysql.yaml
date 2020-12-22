@@ -1,3 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-statefulset-headless
+spec:
+  ports:
+  - port: 3306
+  clusterIP: None
+  selector:
+    app: mysql-statefulset
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql-statefulset
+
+---
+
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -6,7 +31,7 @@ spec:
     selector:
         matchLabels:
             app: mysql-statefulset
-    serviceName: mysql-statefulset
+    serviceName: mysql-statefulset-headless
     replicas: 1
     template:
         metadata:
