@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: javaapp
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: javaapp
+    template:
+        metadata:
+            labels:
+                app: javaapp
+        spec:
+            containers:
+            - name: javaapp
+              image: nachomillangarcia/java-insst
+              ports:
+              - containerPort: 8080
+              env:
+              - name: DB_HOSTNAME
+                value: mysql
+              - name: DB_NAME
+                value: javaapp
+              - name: DB_USERNAME
+                value: javaapp
+              - name: DB_PASSWORD
+                value: java123
+              resources:
+                requests:
+                  memory: 0.5G
+                  cpu: 500m
+                limits:
+                  memory: 1G
+                  cpu: 1
+              livenessProbe:
+                  httpGet:
+                      path: /
+                      port: 8080
+                  initialDelaySeconds: 60
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readinessProbe:
+                  httpGet:
+                      path: /
+                      port: 8080
+                  periodSeconds: 10

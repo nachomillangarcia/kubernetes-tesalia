@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: mysql-deployment
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: java-mysql
+    template:
+        metadata:
+            labels:
+                app: java-mysql
+        spec:
+            containers:
+            - name: mysql
+              image: mysql
+              ports:
+              - containerPort: 3306
+              env:
+              - name: MYSQL_ROOT_PASSWORD
+                value: password
+              - name: MYSQL_DATABASE
+                value: javaapp
+              - name: MYSQL_USER
+                value: javaapp
+              - name: MYSQL_PASSWORD
+                value: java123
+              resources:
+                requests:
+                  memory: 0.5G
+                  cpu: 100m
+                limits:
+                  memory: 1G
+                  cpu: 200m
+              livenessProbe:
+                  tcpSocket:
+                    port: 3306
+                  initialDelaySeconds: 60
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readinessProbe:
+                  tcpSocket:
+                    port: 3306
+                  periodSeconds: 10
