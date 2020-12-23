@@ -46,3 +46,26 @@ spec:
                       path: /
                       port: 8080
                   periodSeconds: 10
+            affinity:
+              podAntiAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  podAffinityTerm:
+                    labelSelector:
+                      matchExpressions:
+                      - key: app
+                        operator: In
+                        values:
+                        - javaapp
+                    topologyKey: topology.kubernetes.io/zone
+              podAffinity:
+                preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  podAffinityTerm:
+                    labelSelector:
+                      matchExpressions:
+                      - key: app
+                        operator: In
+                        values:
+                        - mysql-statefulset
+                    topologyKey: kubernetes.io/hostname

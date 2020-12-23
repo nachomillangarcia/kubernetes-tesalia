@@ -1,56 +1,52 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql-statefulset-headless
+  name: mongo-statefulset-headless
 spec:
   ports:
-  - port: 3306
+  - port: 27017
   clusterIP: None
   selector:
-    app: mysql-statefulset
+    app: mongo-statefulset
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: mongo
 spec:
   ports:
-  - port: 3306
+  - port: 27017
   selector:
-    app: mysql-statefulset
+    app: mongo-statefulset
 
 ---
 
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-    name: mysql-statefulset
+    name: mongo-statefulset
 spec:
     selector:
         matchLabels:
-            app: mysql-statefulset
-    serviceName: mysql-statefulset-headless
+            app: mongo-statefulset
+    serviceName: mongo-statefulset-headless
     replicas: 1
     template:
         metadata:
             labels:
-                app: mysql-statefulset
+                app: mongo-statefulset
         spec:
             containers:
-            - name: mysql
-              image: mysql
+            - name: mongo
+              image: mongo
               ports:
-              - containerPort: 3306
+              - containerPort: 27017
               env:
-              - name: MYSQL_ROOT_PASSWORD
-                value: password
-              - name: MYSQL_DATABASE
+              - name: MONGO_INITDB_ROOT_USERNAME
                 value: javaapp
-              - name: MYSQL_USER
-                value: javaapp
-              - name: MYSQL_PASSWORD
+              - name: MONGO_INITDB_ROOT_PASSWORD
                 value: java123
               resources:
                 requests:
@@ -61,29 +57,21 @@ spec:
                   cpu: 200m
               livenessProbe:
                   tcpSocket:
-                    port: 3306
+                    port: 27017
                   initialDelaySeconds: 60
                   periodSeconds: 10
                   failureThreshold: 3
               readinessProbe:
                   tcpSocket:
-                    port: 3306
+                    port: 27017
                   periodSeconds: 10
               volumeMounts:
               - name: data
-                mountPath: /var/lib/mysql
-    tolerations:
-    - key: "funcion"
-      operator: "Equal"
-      value: "database"
-      effect: "NoSchedule"
-    nodeSelector:
-      funcion: database     
+                mountPath: /data/db
     volumeClaimTemplates:
     - metadata:
         name: data
       spec:
-        storageClassName: azurefile
         accessModes: [ "ReadWriteOnce" ]
         resources:
           requests:

@@ -48,7 +48,9 @@ spec:
                 - mountPath: /config
                   name: volume-nginx-configmap
                 - mountPath: /credentials
-                  name: volume-nginx-secret              
+                  name: volume-nginx-secret
+            nodeSelector:
+              beta.kubernetes.io/instance-type: t3a.xlarge  
             volumes:
               - name: volume-nginx-configmap
                 configMap:
