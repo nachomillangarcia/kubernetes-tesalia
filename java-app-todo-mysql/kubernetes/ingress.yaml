@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: javaapp
+  annotations:
+    kubernetes.io/ingress.class: nginx-tesalia
+spec:
+  rules:
+  - host: my.tesalia.com
+    http:
+      paths:
+      - backend:
+          serviceName: javaapp
+          servicePort: 8080

@@ -2,6 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: javaapp
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: "/metrics"
+    prometheus.io/port: "8080"
 spec:
   type: NodePort
   selector:
@@ -10,5 +14,4 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-
 
